@@ -30,8 +30,9 @@
   code, pre, kbd { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; }
   code.inline {
     background: #f1f5f9; color: #0f766e; padding: 2px 6px;
-    border-radius: 4px; font-size: 0.88em;
+    border-radius: 4px; font-size: 0.88em; overflow-wrap: anywhere;
   }
+  kbd { overflow-wrap: anywhere; }
 
   /* ---- Sticky nav ---- */
   nav.top {
@@ -80,7 +81,7 @@
   ul.prose li, ol.prose li { margin: 6px 0; }
 
   /* ---- Cards / callouts ---- */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; min-width: 0; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
   .note {
     background: #f0fdfa; border-left: 3px solid var(--accent);
@@ -102,7 +103,11 @@
   .model .box h4 { font-size: 16px; margin-bottom: 4px; }
   .model .box p { font-size: 14px; margin: 0; }
   .model .arrow { display: flex; align-items: center; color: var(--accent); font-size: 26px; font-weight: 700; }
-  @media (max-width: 760px) { .model .arrow { transform: rotate(90deg); } }
+  @media (max-width: 760px) {
+    .model { flex-direction: column; align-items: stretch; }
+    .model .box { flex: 0 0 auto; min-width: 0; width: 100%; }
+    .model .arrow { transform: rotate(90deg); align-self: center; height: auto; }
+  }
 
   /* ---- Code blocks ---- */
   pre.code {
@@ -475,7 +480,7 @@
             the page looks:</p>
             <span class="code-label good">Fixed</span>
             <pre class="code" id="ex3-good"></pre>
-            <p><strong>Prevent it next time:</strong> paste with <kbd>Ctrl/Cmd&nbsp;+&nbsp;Shift&nbsp;+&nbsp;V</kbd>
+            <p><strong>Prevent it next time:</strong> paste with <kbd>Ctrl/Cmd + Shift + V</kbd>
             (paste without formatting), or paste into a plain-text box first, then copy from there.</p>
           </div>
         </details>
@@ -527,7 +532,7 @@
         <ul class="prose">
           <li>Edit the <strong>words between tags</strong> — fix typos, reword sentences.</li>
           <li>Add a new bullet by copying an existing <code class="inline">&lt;li&gt;...&lt;/li&gt;</code> line.</li>
-          <li>Paste text using <strong>paste-without-formatting</strong> (<kbd>Ctrl/Cmd&nbsp;+&nbsp;Shift&nbsp;+&nbsp;V</kbd>).</li>
+          <li>Paste text using <strong>paste-without-formatting</strong> (<kbd>Ctrl/Cmd + Shift + V</kbd>).</li>
           <li>Compare a broken page against the healthy shape in Part 2.</li>
         </ul>
       </div>
