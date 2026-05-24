@@ -36,16 +36,16 @@
   /* ---- Sticky nav ---- */
   nav.top {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(15,23,42,0.96); backdrop-filter: blur(6px);
-    border-bottom: 1px solid #1e293b;
+    background: #0b1220;
+    border-bottom: 1px solid #243049;
   }
   nav.top .container { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding-top: 10px; padding-bottom: 10px; }
   nav.top .brand { color: #fff; font-weight: 700; font-size: 14px; margin-right: 12px; }
-  nav.top a {
-    color: #cbd5e1; text-decoration: none; font-size: 13px;
+  nav.top a, nav.top a:visited {
+    color: #e8eef6; text-decoration: none; font-size: 13px;
     padding: 5px 10px; border-radius: 6px;
   }
-  nav.top a:hover { background: #1e293b; color: #fff; }
+  nav.top a:hover { background: #243049; color: #fff; }
 
   /* ---- Hero ---- */
   .hero {
@@ -107,7 +107,7 @@
   pre.code {
     background: #0f172a; color: #e2e8f0; padding: 18px 20px; border-radius: 10px;
     overflow-x: auto; font-size: 13px; line-height: 1.55; margin: 14px 0;
-    white-space: pre; tab-size: 2;
+    white-space: pre; tab-size: 2; max-width: 100%;
   }
   pre.code.small { font-size: 12.5px; }
   .code-label {
@@ -157,8 +157,15 @@
 
   /* ---- Sandbox ---- */
   .sandbox-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  .sandbox-pane { min-width: 0; }   /* lets the code column shrink so the pre scrolls instead of overflowing */
   @media (max-width: 880px) { .sandbox-wrap { grid-template-columns: 1fr; } .grid2 { grid-template-columns: 1fr; } }
   .sandbox-pane h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
+
+  /* Inline broken-vs-fixed mini previews inside each exercise */
+  .mini-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0 6px; }
+  .mini-compare > div { min-width: 0; }
+  @media (max-width: 680px) { .mini-compare { grid-template-columns: 1fr; } }
+  iframe.mini { width: 100%; height: 190px; border: 1px solid var(--border); border-radius: 8px; background: #fff; display: block; margin-top: 4px; }
   #editor {
     width: 100%; height: 420px; resize: vertical; border: 1px solid var(--border);
     border-radius: 10px; padding: 14px; font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -384,7 +391,11 @@
         a <code class="inline">style="..."</code> attribute:</p>
         <span class="code-label bad">Broken</span>
         <pre class="code" id="ex1-bad"></pre>
-        <div class="btn-row"><button class="btn" type="button" data-load="inline" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <div class="mini-compare">
+          <div><span class="code-label bad">Broken &mdash; rendered</span><iframe class="mini" id="ex1-bad-view" title="Broken result"></iframe></div>
+          <div><span class="code-label good">Fixed &mdash; rendered</span><iframe class="mini" id="ex1-good-view" title="Fixed result"></iframe></div>
+        </div>
+        <div class="btn-row"><button class="btn ghost" type="button" data-load="inline" data-scroll="sandbox">Open this in the full sandbox &uarr;</button></div>
         <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
           <div class="answer">
             <p><strong>What's wrong:</strong> the <code class="inline">style="..."</code> on the paragraph
@@ -413,7 +424,11 @@
         (or its matching closing <code class="inline">&lt;/div&gt;</code>) got removed:</p>
         <span class="code-label bad">Broken (opening wrapper gone)</span>
         <pre class="code" id="ex2-bad"></pre>
-        <div class="btn-row"><button class="btn" type="button" data-load="wrapper" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <div class="mini-compare">
+          <div><span class="code-label bad">Broken &mdash; rendered</span><iframe class="mini" id="ex2-bad-view" title="Broken result"></iframe></div>
+          <div><span class="code-label good">Fixed &mdash; rendered</span><iframe class="mini" id="ex2-good-view" title="Fixed result"></iframe></div>
+        </div>
+        <div class="btn-row"><button class="btn ghost" type="button" data-load="wrapper" data-scroll="sandbox">Open this in the full sandbox &uarr;</button></div>
         <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
           <div class="answer">
             <p><strong>What's wrong:</strong> the stylesheet attaches fonts and the box through that wrapper.
@@ -442,7 +457,11 @@
         class names, <code class="inline">&lt;span&gt;</code> wrappers, and inline styles all over:</p>
         <span class="code-label bad">Broken</span>
         <pre class="code" id="ex3-bad"></pre>
-        <div class="btn-row"><button class="btn" type="button" data-load="mso" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <div class="mini-compare">
+          <div><span class="code-label bad">Broken &mdash; rendered</span><iframe class="mini" id="ex3-bad-view" title="Broken result"></iframe></div>
+          <div><span class="code-label good">Fixed &mdash; rendered</span><iframe class="mini" id="ex3-good-view" title="Fixed result"></iframe></div>
+        </div>
+        <div class="btn-row"><button class="btn ghost" type="button" data-load="mso" data-scroll="sandbox">Open this in the full sandbox &uarr;</button></div>
         <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
           <div class="answer">
             <p><strong>What's wrong:</strong> none of that <code class="inline">Mso...</code> markup means
@@ -470,7 +489,11 @@
         <code class="inline">exam-tip</code> (an added hyphen):</p>
         <span class="code-label bad">Broken</span>
         <pre class="code" id="ex4-bad"></pre>
-        <div class="btn-row"><button class="btn" type="button" data-load="class" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <div class="mini-compare">
+          <div><span class="code-label bad">Broken &mdash; rendered</span><iframe class="mini" id="ex4-bad-view" title="Broken result"></iframe></div>
+          <div><span class="code-label good">Fixed &mdash; rendered</span><iframe class="mini" id="ex4-good-view" title="Fixed result"></iframe></div>
+        </div>
+        <div class="btn-row"><button class="btn ghost" type="button" data-load="class" data-scroll="sandbox">Open this in the full sandbox &uarr;</button></div>
         <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
           <div class="answer">
             <p><strong>What's wrong:</strong> the stylesheet only knows the exact name
@@ -643,6 +666,21 @@
     ex4good: '<div class="tipbox">\n  <div class="examtip">\n    <p><strong>Exam Tip:</strong> ...</p>\n  </div>\n</div>'
   };
 
+  /* --- Focused fragments rendered in each exercise's inline preview. Each is
+     wrapped in the page's structure so the stylesheet applies, and kept small
+     so the broken-vs-fixed difference is visible without scrolling. ---------- */
+  var W = function (inner) { return '<div class="bostonifi"><div id="container"><div id="decorative">' + inner + '</div></div></div>'; };
+  var FRAGMENTS = {
+    "ex1-bad-view":  W('<p>A normal sentence on the page.</p><p style="font-family: Times New Roman; color: #cc0000; font-size: 20px;">A sentence pasted from another document.</p>'),
+    "ex1-good-view": W('<p>A normal sentence on the page.</p><p>A sentence pasted from another document.</p>'),
+    "ex2-bad-view":  '<div id="container"><div id="decorative"><h2>A Heading</h2><p>Some body text in the lesson.</p></div></div>',
+    "ex2-good-view": W('<h2>A Heading</h2><p>Some body text in the lesson.</p>'),
+    "ex3-bad-view":  W('<p>A clean paragraph.</p><p class="MsoNormal" style="margin:0in"><span style="font-size:11.0pt;font-family:&#39;Calibri&#39;,sans-serif;color:#1F3864">A paragraph pasted from Word.</span></p>'),
+    "ex3-good-view": W('<p>A clean paragraph.</p><p>A paragraph pasted from Word.</p>'),
+    "ex4-bad-view":  W('<div class="tipbox"><div class="exam-tip"><p><strong>Exam Tip:</strong> Remember the four stages in order.</p></div></div>'),
+    "ex4-good-view": W('<div class="tipbox"><div class="examtip"><p><strong>Exam Tip:</strong> Remember the four stages in order.</p></div></div>')
+  };
+
   /* --- Rendering + wiring (no need to edit below) ---------------------------- */
   function render(iframe, markup) {
     iframe.srcdoc = "<!DOCTYPE html><html><head><meta charset='utf-8'><style>" +
@@ -660,6 +698,12 @@
     setText("ex2-bad", SNIPPETS.ex2bad);   setText("ex2-good", SNIPPETS.ex2good);
     setText("ex3-bad", SNIPPETS.ex3bad);   setText("ex3-good", SNIPPETS.ex3good);
     setText("ex4-bad", SNIPPETS.ex4bad);   setText("ex4-good", SNIPPETS.ex4good);
+
+    // Part 4 — inline broken-vs-fixed rendered previews.
+    Object.keys(FRAGMENTS).forEach(function (id) {
+      var f = document.getElementById(id);
+      if (f) render(f, FRAGMENTS[id]);
+    });
 
     // Part 3 — sandbox.
     var editor = document.getElementById("editor");
