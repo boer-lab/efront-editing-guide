@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Editing LMS Pages — A Field Guide for Instructors</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --bg-light: #f8fafc;
+    --text: #0f172a;
+    --text-muted: #475569;
+    --accent: #0d9488;
+    --accent-light: #ccfbf1;
+    --border: #e2e8f0;
+    --card: #ffffff;
+    --bad: #ef4444;
+    --good: #0d9488;
+    --warn: #ca8a04;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    color: var(--text);
+    background: var(--bg-light);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
+  code, pre, kbd { font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace; }
+  code.inline {
+    background: #f1f5f9; color: #0f766e; padding: 2px 6px;
+    border-radius: 4px; font-size: 0.88em;
+  }
+
+  /* ---- Sticky nav ---- */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(15,23,42,0.96); backdrop-filter: blur(6px);
+    border-bottom: 1px solid #1e293b;
+  }
+  nav.top .container { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding-top: 10px; padding-bottom: 10px; }
+  nav.top .brand { color: #fff; font-weight: 700; font-size: 14px; margin-right: 12px; }
+  nav.top a {
+    color: #cbd5e1; text-decoration: none; font-size: 13px;
+    padding: 5px 10px; border-radius: 6px;
+  }
+  nav.top a:hover { background: #1e293b; color: #fff; }
+
+  /* ---- Hero ---- */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #134e4a 100%);
+    color: white; padding: 80px 0 64px; border-bottom: 4px solid var(--accent);
+  }
+  .hero .eyebrow {
+    color: var(--accent-light); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .hero h1 { font-size: 42px; font-weight: 700; line-height: 1.15; margin-bottom: 18px; letter-spacing: -0.02em; }
+  .hero p.lede { font-size: 18px; color: #cbd5e1; max-width: 720px; }
+  .hero .reassure {
+    margin-top: 24px; display: inline-block; background: rgba(204,251,241,0.12);
+    border: 1px solid rgba(204,251,241,0.25); color: #ccfbf1;
+    padding: 10px 16px; border-radius: 8px; font-size: 15px;
+  }
+
+  /* ---- Sections ---- */
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  .section-eyebrow {
+    color: var(--accent); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px;
+  }
+  h2 { font-size: 30px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; letter-spacing: -0.015em; }
+  h3 { font-size: 19px; font-weight: 600; margin-bottom: 10px; margin-top: 28px; }
+  p { margin-bottom: 14px; color: var(--text-muted); }
+  p strong { color: var(--text); }
+  ul.prose, ol.prose { margin: 0 0 16px 22px; color: var(--text-muted); }
+  ul.prose li, ol.prose li { margin: 6px 0; }
+
+  /* ---- Cards / callouts ---- */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 24px 0; }
+  .note {
+    background: #f0fdfa; border-left: 3px solid var(--accent);
+    padding: 14px 18px; margin: 18px 0; border-radius: 0 8px 8px 0; font-size: 15px;
+  }
+  .note strong { color: #0f766e; }
+  .warnbox {
+    background: #fef9c3; border-left: 3px solid var(--warn);
+    padding: 14px 18px; margin: 18px 0; border-radius: 0 8px 8px 0; font-size: 15px; color: #713f12;
+  }
+
+  /* ---- Mental model diagram ---- */
+  .model { display: flex; align-items: stretch; gap: 12px; margin: 28px 0; flex-wrap: wrap; }
+  .model .box {
+    flex: 1; min-width: 180px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .model .box .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .model .box h4 { font-size: 16px; margin-bottom: 4px; }
+  .model .box p { font-size: 14px; margin: 0; }
+  .model .arrow { display: flex; align-items: center; color: var(--accent); font-size: 26px; font-weight: 700; }
+  @media (max-width: 760px) { .model .arrow { transform: rotate(90deg); } }
+
+  /* ---- Code blocks ---- */
+  pre.code {
+    background: #0f172a; color: #e2e8f0; padding: 18px 20px; border-radius: 10px;
+    overflow-x: auto; font-size: 13px; line-height: 1.55; margin: 14px 0;
+    white-space: pre; tab-size: 2;
+  }
+  pre.code.small { font-size: 12.5px; }
+  .code-label {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 5px 5px 0 0; margin-top: 6px;
+  }
+  .code-label.good { background: var(--good); color: #fff; }
+  .code-label.bad { background: var(--bad); color: #fff; }
+
+  /* ---- Quiz / reveals (no JS needed) ---- */
+  details.reveal {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 4px 18px; margin: 12px 0;
+  }
+  details.reveal summary {
+    cursor: pointer; font-weight: 600; padding: 12px 0; list-style: none;
+    color: var(--text); display: flex; align-items: center; gap: 10px;
+  }
+  details.reveal summary::-webkit-details-marker { display: none; }
+  details.reveal summary::before {
+    content: "?"; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent-light); color: #0f766e; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  details.reveal[open] summary::before { content: "\2713"; background: var(--accent); color: #fff; }
+  details.reveal .answer { padding: 4px 0 16px 32px; color: var(--text-muted); font-size: 15px; }
+  details.reveal .answer p { margin-bottom: 8px; }
+
+  /* ---- Exercise blocks ---- */
+  .exercise { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin: 22px 0; background: var(--card); }
+  .exercise .ex-head { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: baseline; gap: 12px; }
+  .exercise .ex-num {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--accent);
+    color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .exercise .ex-head h3 { margin: 0; font-size: 18px; }
+  .exercise .ex-body { padding: 8px 24px 22px; }
+  .btn {
+    display: inline-block; background: var(--accent); color: #fff; border: none;
+    padding: 9px 16px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; text-decoration: none; font-family: inherit;
+  }
+  .btn:hover { background: #0f766e; }
+  .btn.ghost { background: #f1f5f9; color: var(--text); }
+  .btn.ghost:hover { background: #e2e8f0; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+
+  /* ---- Sandbox ---- */
+  .sandbox-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  @media (max-width: 880px) { .sandbox-wrap { grid-template-columns: 1fr; } .grid2 { grid-template-columns: 1fr; } }
+  .sandbox-pane h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 8px; }
+  #editor {
+    width: 100%; height: 420px; resize: vertical; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px; font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.5; color: #0f172a; background: #fbfcfe; tab-size: 2;
+  }
+  #preview {
+    width: 100%; height: 420px; border: 1px solid var(--border); border-radius: 10px; background: #fff;
+  }
+
+  footer { background: var(--bg); color: #94a3b8; padding: 36px 0; font-size: 14px; text-align: center; }
+  footer code { color: #cbd5e1; }
+
+  @media (max-width: 720px) {
+    .hero { padding: 56px 0 44px; } .hero h1 { font-size: 30px; }
+    section { padding: 48px 0; } h2 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================================
+     HOW TO EDIT THIS COURSE
+     - Prose (headings, paragraphs, quiz Q&A, checklist) is plain HTML below.
+       Edit the words between the tags freely.
+     - The live code samples (the "good code", the broken variants, and the
+       LMS stylesheet used by the preview) live in ONE <script> block at the
+       very bottom, clearly marked "EDITABLE COURSE DATA". Change them there.
+     ========================================================================= -->
+
+<nav class="top">
+  <div class="container">
+    <span class="brand">LMS Editing Guide</span>
+    <a href="#start">How to use this</a>
+    <a href="#basics">1. Basics</a>
+    <a href="#anatomy">2. Anatomy</a>
+    <a href="#sandbox">3. Sandbox</a>
+    <a href="#breaks">4. Spot the break</a>
+    <a href="#checklist">Cheat sheet</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="start">
+  <div class="container">
+    <div class="eyebrow">For Course Instructors</div>
+    <h1>Editing LMS Pages<br/>Without Breaking Them</h1>
+    <p class="lede">Our course pages all share the same simple structure and a small set of styles.
+    You don't need to <em>write</em> HTML. You need to <strong>read</strong> the good version,
+    <strong>recognise</strong> what changed when a page looks wrong, and <strong>put it back</strong>.
+    This guide teaches exactly that — with a live editor you can experiment in.</p>
+    <div class="reassure">Nothing you do on this page can affect a real course. Break things freely and watch what happens.</div>
+  </div>
+</header>
+
+<!-- ===================== SECTION 1: FUNDAMENTALS ===================== -->
+<section id="basics">
+  <div class="container">
+    <div class="section-eyebrow">Part 1</div>
+    <h2>The three ideas that explain everything</h2>
+    <p>Ninety percent of "why does this page look wrong?" comes down to three small ideas. Read these,
+    then take the quick check at the end.</p>
+
+    <h3>1. A tag is a label wrapped around content</h3>
+    <p>HTML is just your text with <strong>tags</strong> around it that say what each piece <em>is</em>.
+    Most tags come in pairs — an opening tag and a closing tag — with your content in between:</p>
+    <pre class="code">&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;strong&gt;This is bold.&lt;/strong&gt;</pre>
+    <p>The closing tag has a slash: <code class="inline">&lt;/p&gt;</code>. A few tags stand alone and
+    close themselves — they end with <code class="inline">/&gt;</code> and wrap nothing:</p>
+    <pre class="code">&lt;br /&gt;        a line break
+&lt;img src="diagram.svg" /&gt;   an image</pre>
+
+    <h3>2. An attribute is extra info inside a tag</h3>
+    <p>Inside the opening tag you'll see <strong>attributes</strong> — they look like
+    <code class="inline">name="value"</code>. The four you'll meet most:</p>
+    <ul class="prose">
+      <li><code class="inline">class="examtip"</code> and <code class="inline">id="container"</code> — <strong>names</strong> the styling looks for (more on this next).</li>
+      <li><code class="inline">src="diagram.svg"</code> — where an image or video lives.</li>
+      <li><code class="inline">style="..."</code> — styling written <em>directly on the element</em>. This one is the usual troublemaker.</li>
+    </ul>
+
+    <h3>3. The styling lives somewhere you never see</h3>
+    <p>Here's the key one. The colours, fonts, boxes, and spacing are <strong>not</strong> on your page.
+    They live in a separate company <strong>stylesheet (CSS)</strong> that you don't edit. That stylesheet
+    says things like <em>"anything with <code class="inline">class="examtip"</code> gets a light-blue box."</em></p>
+    <p>Your page simply has to use the <strong>right names</strong> in the <strong>right structure</strong> so
+    the stylesheet can find each piece and dress it. That gives us the mental model for this whole guide:</p>
+
+    <div class="model">
+      <div class="box">
+        <div class="tag">You edit this</div>
+        <h4>Structure + Names</h4>
+        <p>The <code class="inline">&lt;div&gt;</code> wrappers and the <code class="inline">class</code> / <code class="inline">id</code> names on your page.</p>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="box">
+        <div class="tag">Triggers</div>
+        <h4>A match</h4>
+        <p>The stylesheet finds each name and applies the look meant for it.</p>
+      </div>
+      <div class="arrow">&rarr;</div>
+      <div class="box">
+        <div class="tag">You never edit this</div>
+        <h4>The Styling</h4>
+        <p>Fonts, colours, the blue tip box, the bordered container — all defined elsewhere.</p>
+      </div>
+    </div>
+
+    <div class="note"><strong>So the two ways a page breaks are:</strong> (1) you remove or rename a
+    wrapper/name, so the stylesheet can't find it — the styling silently falls off; or (2) a pasted
+    <code class="inline">style="..."</code> overrides the stylesheet and fights the page's normal look.
+    Everything in Part 4 is one of these two.</div>
+
+    <h3>Quick check</h3>
+    <p>Click each question to reveal the answer. If one surprises you, re-read the idea above it.</p>
+
+    <details class="reveal"><summary>Is <code class="inline">&lt;br /&gt;</code> a tag?</summary>
+      <div class="answer"><p>Yes — it's a self-closing tag (it ends in <code class="inline">/&gt;</code> and wraps no content).
+      It just inserts a line break.</p></div>
+    </details>
+    <details class="reveal"><summary>What does <code class="inline">class="tipbox"</code> actually do on its own?</summary>
+      <div class="answer"><p>By itself, nothing visible. It's a <strong>name the stylesheet looks for</strong>.
+      The stylesheet says "style anything named <code class="inline">tipbox</code> like this." Rename it or remove
+      it and the styling can no longer find that element.</p></div>
+    </details>
+    <details class="reveal"><summary>Where is the light-blue colour of the Exam Tip box defined?</summary>
+      <div class="answer"><p>Not on the page you edit — in the company stylesheet (the <code class="inline">.examtip</code>
+      rule). Your page only needs <code class="inline">class="examtip"</code> in the right place to switch it on.</p></div>
+    </details>
+    <details class="reveal"><summary>You need to fix a typo in a sentence. What's safe to change — the words, or the <code class="inline">&lt;div&gt;</code> around them?</summary>
+      <div class="answer"><p>Only the words — the text <em>between</em> the tags. Leave the
+      <code class="inline">&lt;div&gt;</code>, <code class="inline">&lt;p&gt;</code>, class names, and ids exactly as they are.</p></div>
+    </details>
+  </div>
+</section>
+
+<!-- ===================== SECTION 2: ANATOMY ===================== -->
+<section id="anatomy">
+  <div class="container">
+    <div class="section-eyebrow">Part 2</div>
+    <h2>What a healthy page looks like</h2>
+    <p>Below is a typical page in our standard structure (a harmless sample lesson). On the left is the
+    actual code; on the right is exactly how it renders with our stylesheet. This is your reference —
+    when a real page looks wrong, compare it against this shape.</p>
+
+    <div class="sandbox-wrap">
+      <div class="sandbox-pane">
+        <h4>The good code</h4>
+        <pre class="code small" id="anatomy-code"></pre>
+      </div>
+      <div class="sandbox-pane">
+        <h4>How it renders</h4>
+        <iframe id="anatomy-preview" title="Rendered sample page" style="width:100%;height:520px;border:1px solid var(--border);border-radius:10px;background:#fff;"></iframe>
+      </div>
+    </div>
+
+    <h3>What each wrapper is for</h3>
+    <ul class="prose">
+      <li><code class="inline">&lt;div class="bostonifi"&gt;</code> — the outer brand wrapper. It supplies the
+      <strong>fonts</strong> (Arial body, Georgia headings). Lose it and the whole page reverts to plain browser text.</li>
+      <li><code class="inline">&lt;div id="container"&gt;</code> — supplies the <strong>bordered, padded box</strong>
+      the content sits in.</li>
+      <li><code class="inline">&lt;div id="decorative"&gt;</code> — holds the actual lesson content.</li>
+      <li><code class="inline">&lt;div class="tipbox"&gt;&lt;div class="examtip"&gt;</code> — the blue
+      <strong>Exam Tip</strong> box. Both names matter.</li>
+      <li><code class="inline">&lt;div class="week1"&gt;</code> + <code class="inline">&lt;iframe&gt;</code> — the
+      <strong>video</strong> embed.</li>
+    </ul>
+
+    <div class="warnbox"><strong>The exception to "inline styles are bad":</strong> the image and the video
+    in this page <em>do</em> carry <code class="inline">style="..."</code> — the centring on the image and the
+    <code class="inline">padding: 56.25%</code> / <code class="inline">position</code> on the video. These are
+    <strong>intentional and required</strong>. Leave them. The trouble is inline styles that arrive by
+    accident from a copy-paste (Part 4, Exercise 1).</div>
+  </div>
+</section>
+
+<!-- ===================== SECTION 3: LIVE SANDBOX ===================== -->
+<section id="sandbox">
+  <div class="container">
+    <div class="section-eyebrow">Part 3</div>
+    <h2>Try it yourself — the live sandbox</h2>
+    <p>Edit the code on the left and the preview updates instantly. This is the safest way to build
+    intuition: <strong>break it on purpose and watch what happens.</strong> Use the buttons to load a
+    common mistake, see the damage, then hit <em>Reset</em>.</p>
+
+    <div class="btn-row">
+      <button class="btn ghost" type="button" data-load="good">Reset to good code</button>
+      <button class="btn ghost" type="button" data-load="inline">Paste an inline style</button>
+      <button class="btn ghost" type="button" data-load="wrapper">Delete the outer wrapper</button>
+      <button class="btn ghost" type="button" data-load="mso">Paste Word junk</button>
+      <button class="btn ghost" type="button" data-load="class">Mistype a class name</button>
+    </div>
+
+    <div class="sandbox-wrap">
+      <div class="sandbox-pane">
+        <h4>Edit the HTML</h4>
+        <textarea id="editor" spellcheck="false" aria-label="HTML editor"></textarea>
+      </div>
+      <div class="sandbox-pane">
+        <h4>Live preview (with our stylesheet)</h4>
+        <iframe id="preview" title="Live preview"></iframe>
+      </div>
+    </div>
+    <p style="margin-top:12px;font-size:14px;">Tip: after loading a broken example, look at the preview,
+    then find the difference in the code and fix it by hand. That's the exact skill you need on a real page.</p>
+  </div>
+</section>
+
+<!-- ===================== SECTION 4: SPOT THE BREAK ===================== -->
+<section id="breaks">
+  <div class="container">
+    <div class="section-eyebrow">Part 4</div>
+    <h2>The four mistakes that cause 95% of broken pages</h2>
+    <p>Each one shows the broken code, then a reveal explaining what's wrong, how the page looks, and the fix.
+    Hit <em>"Show me in the sandbox"</em> to watch it happen live above.</p>
+
+    <!-- ===== EXERCISE 1: Inline style from copy-paste ===== -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-num">1</span><h3>An inline style snuck in from a copy-paste</h3></div>
+      <div class="ex-body">
+        <p>You pasted a sentence from an email or a Word doc, and it brought its own clothing with it —
+        a <code class="inline">style="..."</code> attribute:</p>
+        <span class="code-label bad">Broken</span>
+        <pre class="code" id="ex1-bad"></pre>
+        <div class="btn-row"><button class="btn" type="button" data-load="inline" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
+          <div class="answer">
+            <p><strong>What's wrong:</strong> the <code class="inline">style="..."</code> on the paragraph
+            overrides our stylesheet. The text turns red and switches to the wrong font — it stops matching
+            the rest of the page.</p>
+            <p><strong>What you'll notice:</strong> one paragraph looks "off" — different colour or font from
+            everything around it. (Interesting detail: the pasted <em>font-size</em> often <em>doesn't</em>
+            take effect because our stylesheet forces 14px, while the <em>colour</em> does. So only part of a
+            paste may visibly change — that's still a sign to clean it.)</p>
+            <p><strong>The fix:</strong> delete the whole <code class="inline">style="..."</code> attribute so
+            the paragraph goes back to inheriting the page's styling:</p>
+            <span class="code-label good">Fixed</span>
+            <pre class="code" id="ex1-good"></pre>
+            <p><strong>Don't confuse this</strong> with the image/video inline styles in Part 2 — those are
+            meant to be there. The giveaway for a <em>bad</em> one: it's on a normal paragraph or span of text.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ===== EXERCISE 2: Deleted structural tag ===== -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-num">2</span><h3>A structural <code class="inline">&lt;div&gt;</code> got deleted</h3></div>
+      <div class="ex-body">
+        <p>While trimming content, the outer <code class="inline">&lt;div class="bostonifi"&gt;</code> wrapper
+        (or its matching closing <code class="inline">&lt;/div&gt;</code>) got removed:</p>
+        <span class="code-label bad">Broken (opening wrapper gone)</span>
+        <pre class="code" id="ex2-bad"></pre>
+        <div class="btn-row"><button class="btn" type="button" data-load="wrapper" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
+          <div class="answer">
+            <p><strong>What's wrong:</strong> the stylesheet attaches fonts and the box through that wrapper.
+            Remove it and the stylesheet can't find the content — fonts revert to plain Times, headings lose
+            their Georgia look, and the bordered box disappears. The text is all still there; it just looks
+            naked.</p>
+            <p><strong>What you'll notice:</strong> the whole page suddenly looks like an unstyled document —
+            a strong sign a wrapper is missing, not the text.</p>
+            <p><strong>The fix:</strong> put the wrapper back, and make sure every opening
+            <code class="inline">&lt;div&gt;</code> still has its matching closing
+            <code class="inline">&lt;/div&gt;</code> at the end. The healthy nesting is:</p>
+            <span class="code-label good">Fixed (correct nesting)</span>
+            <pre class="code" id="ex2-good"></pre>
+            <p>A missing <em>closing</em> <code class="inline">&lt;/div&gt;</code> causes a similar mess — count
+            your opening and closing divs; they must balance.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ===== EXERCISE 3: Word / Google Docs paste junk ===== -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-num">3</span><h3>Word / Google Docs paste junk</h3></div>
+      <div class="ex-body">
+        <p>Pasting directly from Word or Google Docs drags in invisible junk — <code class="inline">Mso</code>
+        class names, <code class="inline">&lt;span&gt;</code> wrappers, and inline styles all over:</p>
+        <span class="code-label bad">Broken</span>
+        <pre class="code" id="ex3-bad"></pre>
+        <div class="btn-row"><button class="btn" type="button" data-load="mso" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
+          <div class="answer">
+            <p><strong>What's wrong:</strong> none of that <code class="inline">Mso...</code> markup means
+            anything to our stylesheet, and the inline <code class="inline">&lt;span style="..."&gt;</code>
+            forces the wrong font and size. The paragraph clashes with the page.</p>
+            <p><strong>How to spot it:</strong> tell-tale signs are <code class="inline">class="MsoNormal"</code>,
+            <code class="inline">mso-</code> anywhere in a style, and text buried inside
+            <code class="inline">&lt;span style="..."&gt;</code> wrappers.</p>
+            <p><strong>The fix:</strong> strip it back to a plain paragraph — the way every other paragraph on
+            the page looks:</p>
+            <span class="code-label good">Fixed</span>
+            <pre class="code" id="ex3-good"></pre>
+            <p><strong>Prevent it next time:</strong> paste with <kbd>Ctrl/Cmd&nbsp;+&nbsp;Shift&nbsp;+&nbsp;V</kbd>
+            (paste without formatting), or paste into a plain-text box first, then copy from there.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ===== EXERCISE 4: Broken class name ===== -->
+    <div class="exercise">
+      <div class="ex-head"><span class="ex-num">4</span><h3>A class name got mistyped</h3></div>
+      <div class="ex-body">
+        <p>The Exam Tip box's class was changed from <code class="inline">examtip</code> to
+        <code class="inline">exam-tip</code> (an added hyphen):</p>
+        <span class="code-label bad">Broken</span>
+        <pre class="code" id="ex4-bad"></pre>
+        <div class="btn-row"><button class="btn" type="button" data-load="class" data-scroll="sandbox">Show me in the sandbox &uarr;</button></div>
+        <details class="reveal"><summary>What's wrong, and how do I fix it?</summary>
+          <div class="answer">
+            <p><strong>What's wrong:</strong> the stylesheet only knows the exact name
+            <code class="inline">examtip</code>. <code class="inline">exam-tip</code> is a different name to it,
+            so it matches nothing — the blue box vanishes and the tip shows as plain text.</p>
+            <p><strong>What you'll notice:</strong> a box that used to have a colour/background is suddenly just
+            bare text. Names must match <strong>character for character</strong> — no extra hyphens, spaces, or
+            capital letters.</p>
+            <p><strong>Related trap:</strong> swapping it to a <em>real but different</em> name changes the look
+            instead of removing it — e.g. <code class="inline">class="practitioner"</code> turns the box
+            <em>green</em>. The class name chooses <em>which</em> box you get.</p>
+            <p><strong>The fix:</strong> restore the exact name:</p>
+            <span class="code-label good">Fixed</span>
+            <pre class="code" id="ex4-good"></pre>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHEAT SHEET ===================== -->
+<section id="checklist">
+  <div class="container">
+    <div class="section-eyebrow">Keep this handy</div>
+    <h2>The safe-editing cheat sheet</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin-top:0;">Safe to do</h3>
+        <ul class="prose">
+          <li>Edit the <strong>words between tags</strong> — fix typos, reword sentences.</li>
+          <li>Add a new bullet by copying an existing <code class="inline">&lt;li&gt;...&lt;/li&gt;</code> line.</li>
+          <li>Paste text using <strong>paste-without-formatting</strong> (<kbd>Ctrl/Cmd&nbsp;+&nbsp;Shift&nbsp;+&nbsp;V</kbd>).</li>
+          <li>Compare a broken page against the healthy shape in Part 2.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0;">Handle with care</h3>
+        <ul class="prose">
+          <li>Never delete a <code class="inline">&lt;div&gt;</code> or its closing <code class="inline">&lt;/div&gt;</code>.</li>
+          <li>Keep <code class="inline">class</code> and <code class="inline">id</code> names <strong>exactly</strong> as they are.</li>
+          <li>If pasted text looks "off", check for a stray <code class="inline">style="..."</code> and delete it…</li>
+          <li>…<strong>but</strong> leave the image-centring and video <code class="inline">style="..."</code> alone.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><strong>Before you save, ask:</strong> Does every box/heading still look like Part 2?
+    Did I only change words? Do my <code class="inline">&lt;div&gt;</code> tags still balance? Any
+    <code class="inline">style="..."</code> I didn't mean to add? If a page still looks wrong and you can't
+    spot why, that's fine — flag it rather than guess.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    A living guide — to change anything on this page, just ask. Updates publish to this same link automatically.
+  </div>
+</footer>
+
+<!-- =========================================================================
+     EDITABLE COURSE DATA + LOGIC
+     Everything the live preview renders is defined here. To change the sample
+     lesson, edit GOOD_CODE. To match a different page, extend LMS_CSS. The
+     broken examples are generated from GOOD_CODE so they always stay in sync.
+     ========================================================================= -->
+<script>
+(function () {
+  "use strict";
+
+  /* --- The company LMS stylesheet (faithful subset of the real one). --------
+     Only the rules that style this page's tags/classes are here. If one of your
+     pages uses other classes (tables, .podcast, .simplystated, etc.), copy those
+     rules from your real stylesheet into this string. */
+  var LMS_CSS = [
+    "body { background:#fff; margin:0; padding:14px; }",
+    ".bostonifi { font-family: Arial, Helvetica, sans-serif; }",
+    ".bostonifi #container { border: 1px solid #DFDFDF !important; margin-bottom: 0; padding: 13px 32px; }",
+    ".bostonifi h2 { margin-top: 32px; margin-bottom: 16px; text-align:left; word-spacing:0.125em; font-family: Georgia, serif; font-weight: normal; font-size: 1.85em; color: #3f3f3f; border-bottom: dotted 1px; clear: both; }",
+    ".bostonifi p { text-indent:0; margin-top:6px; margin-bottom:12px; line-height:22px; font-size:14px !important; font-family: Arial, Helvetica, sans-serif; }",
+    ".bostonifi strong { font-family: Arial, Helvetica, sans-serif; font-weight: bold; }",
+    ".bostonifi em { font-style: italic; font-weight: normal; font-family: Arial, Helvetica, sans-serif; }",
+    ".bostonifi ul { text-align:left; font-size:14px !important; list-style-type: disc; list-style-position: outside; padding-inline-start: 25px; }",
+    ".bostonifi li { margin:2px 0; font-size:14px !important; font-family: Arial, Helvetica, sans-serif; }",
+    ".bostonifi img { border: none; }",
+    "#container p { text-align:left; }",
+    "#container h2 { text-align:left; }",
+    "#container ul li { line-height:1.4em !important; text-align:left; }",
+    ".tipbox p { font-size:0.9em; font-family: verdana, geneva, sans-serif; }",
+    ".examtip { padding:0.5em 1em 0.1em 1em; background-color: rgba(148,208,234,0.7); }",
+    ".practitioner { padding:0.5em 1em 0.1em 1em; background-color: rgba(156,235,156,0.7); }",
+    "iframe { max-width:100% !important; }"
+  ].join("\n");
+
+  /* --- GOOD_CODE: the healthy sample lesson. Edit freely to change the demo. - */
+  var GOOD_CODE =
+'<div class="bostonifi">\n' +
+'  <div id="container">\n' +
+'    <div id="decorative">\n' +
+'\n' +
+'      <h2>The Water Cycle</h2>\n' +
+'\n' +
+'      <p><strong>The water cycle</strong> describes how water moves continuously through the\n' +
+'      environment, changing between liquid, vapour, and ice as it travels between the oceans,\n' +
+'      the atmosphere, and the land.</p>\n' +
+'\n' +
+'      <ul>\n' +
+'        <li>The cycle is driven by energy from the sun and moves through four <strong><em>key stages</em></strong>:<br />\n' +
+'          <ul>\n' +
+'            <li>Evaporation &mdash; the sun heats water in oceans and lakes, turning it into vapour.</li>\n' +
+'            <li>Condensation &mdash; rising vapour cools and forms clouds.</li>\n' +
+'            <li>Precipitation &mdash; water falls back to earth as rain, snow, or hail.</li>\n' +
+'            <li>Collection &mdash; water gathers in oceans, rivers, and underground stores.</li>\n' +
+'          </ul>\n' +
+'        </li>\n' +
+'      </ul>\n' +
+'\n' +
+'      <ul>\n' +
+'        <li>Around <strong>90%</strong> of atmospheric water comes from evaporation.</li>\n' +
+'        <li>The rest comes from plants, through a process called transpiration.</li>\n' +
+'      </ul>\n' +
+'\n' +
+'      <p><strong>Diagram: the stages of the water cycle</strong></p>\n' +
+'\n' +
+'      <p><strong><img src="diagram.svg" alt="The four stages of the water cycle" width="720" height="339" style="display: block; margin-left: auto; margin-right: auto;" /></strong></p>\n' +
+'\n' +
+'      <div class="tipbox">\n' +
+'        <div class="examtip">\n' +
+'          <p><strong>Exam Tip:</strong> A favourite question asks you to put the four stages in order.\n' +
+'          Remember: Evaporation &rarr; Condensation &rarr; Precipitation &rarr; Collection.</p>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="week1" style="padding: 56.25% 0 0 0; position: relative;">\n' +
+'        <p>&nbsp;</p>\n' +
+'        <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="video.html" frameborder="0" title="Sample lesson video"></iframe>\n' +
+'      </div>\n' +
+'\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</div>\n';
+
+  /* --- Broken full-page variants, derived from GOOD_CODE (stay in sync). ----- */
+  var PASTED_INLINE =
+'\n      <p style="font-family: Times New Roman; color: #cc0000; font-size: 20px;">This sentence was pasted in from another document and brought its own styling with it.</p>\n';
+
+  var MSO_PARAGRAPH =
+'\n      <p class="MsoNormal" style="margin:0in;mso-pagination:widow-orphan;line-height:normal"><span style="font-size:11.0pt;font-family:&#39;Calibri&#39;,sans-serif;color:#1F3864">This paragraph was pasted straight from Word and carries hidden Mso markup.</span></p>\n';
+
+  var BREAKS = {
+    good: function () { return GOOD_CODE; },
+    inline: function () { return GOOD_CODE.replace("the land.</p>", "the land.</p>" + PASTED_INLINE); },
+    mso: function () { return GOOD_CODE.replace("the land.</p>", "the land.</p>" + MSO_PARAGRAPH); },
+    "class": function () { return GOOD_CODE.replace('class="examtip"', 'class="exam-tip"'); },
+    wrapper: function () {
+      return GOOD_CODE
+        .replace('<div class="bostonifi">\n', "")   // remove opening wrapper
+        .replace(/<\/div>\s*$/, "");                 // remove its matching closing tag
+    }
+  };
+
+  /* --- Focused snippets shown in the Part 4 exercises. ----------------------- */
+  var SNIPPETS = {
+    ex1bad:  '<p style="font-family: Times New Roman; color: #cc0000;\n   font-size: 20px;">This sentence was pasted from\nanother document.</p>',
+    ex1good: '<p>This sentence was pasted from another document.</p>',
+    ex2bad:  '  <div id="container">\n    <div id="decorative">\n      <h2>The Water Cycle</h2>\n      ...\n   (the outer <div class="bostonifi"> wrapper is missing)',
+    ex2good: '<div class="bostonifi">\n  <div id="container">\n    <div id="decorative">\n      <h2>The Water Cycle</h2>\n      ...\n    </div>\n  </div>\n</div>',
+    ex3bad:  '<p class="MsoNormal" style="margin:0in;mso-pagination:\n   widow-orphan"><span style="font-size:11.0pt;\n   font-family:\'Calibri\';color:#1F3864">Pasted from Word.\n</span></p>',
+    ex3good: '<p>Pasted from Word.</p>',
+    ex4bad:  '<div class="tipbox">\n  <div class="exam-tip">     <!-- typo: extra hyphen -->\n    <p><strong>Exam Tip:</strong> ...</p>\n  </div>\n</div>',
+    ex4good: '<div class="tipbox">\n  <div class="examtip">\n    <p><strong>Exam Tip:</strong> ...</p>\n  </div>\n</div>'
+  };
+
+  /* --- Rendering + wiring (no need to edit below) ---------------------------- */
+  function render(iframe, markup) {
+    iframe.srcdoc = "<!DOCTYPE html><html><head><meta charset='utf-8'><style>" +
+      LMS_CSS + "</style></head><body>" + markup + "</body></html>";
+  }
+  function setText(id, text) { var el = document.getElementById(id); if (el) el.textContent = text; }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    // Part 2 — anatomy: show good code as text + render it.
+    setText("anatomy-code", GOOD_CODE);
+    render(document.getElementById("anatomy-preview"), GOOD_CODE);
+
+    // Part 4 — exercise snippets.
+    setText("ex1-bad", SNIPPETS.ex1bad);   setText("ex1-good", SNIPPETS.ex1good);
+    setText("ex2-bad", SNIPPETS.ex2bad);   setText("ex2-good", SNIPPETS.ex2good);
+    setText("ex3-bad", SNIPPETS.ex3bad);   setText("ex3-good", SNIPPETS.ex3good);
+    setText("ex4-bad", SNIPPETS.ex4bad);   setText("ex4-good", SNIPPETS.ex4good);
+
+    // Part 3 — sandbox.
+    var editor = document.getElementById("editor");
+    var preview = document.getElementById("preview");
+    function load(key) {
+      editor.value = (BREAKS[key] || BREAKS.good)();
+      render(preview, editor.value);
+    }
+    editor.addEventListener("input", function () { render(preview, editor.value); });
+    load("good");
+
+    // Buttons: load a variant; optionally scroll to the sandbox.
+    document.querySelectorAll("[data-load]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        load(btn.getAttribute("data-load"));
+        if (btn.getAttribute("data-scroll") === "sandbox") {
+          document.getElementById("sandbox").scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
