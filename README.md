@@ -10,13 +10,12 @@ needing to write HTML from scratch.
 
 | File | Purpose |
 |------|---------|
-| `index.html` | The whole course (hero, fundamentals + quiz, page anatomy, live sandbox, 4 "spot the break" exercises, cheat sheet). Self-contained. |
-| `diagram.svg` | Placeholder image used by the sample lesson. |
-| `video.html` | Tiny placeholder page shown in the sample lesson's video frame. |
+| `index.html` | The whole course (hero, fundamentals + quiz, page anatomy, live sandbox, 4 "spot the break" exercises, cheat sheet). Self-contained — the only file. |
 
 The sample lesson is a harmless made-up topic (the water cycle) that reuses our **real class names
 and a faithful subset of our real stylesheet**, so every break behaves exactly like it would on a
-live course page — without exposing any real courseware.
+live course page — without exposing any real courseware. The sample image (Picsum) and video
+(National Science Foundation, via YouTube) are loaded from the public web so there are no broken links.
 
 ## How to update it
 
