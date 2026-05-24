@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Editing LMS Pages — A Field Guide for Instructors</title>
+<title>Editing eFront Pages — A Field Guide for Instructors</title>
 <style>
   :root {
     --bg: #0f172a;
@@ -192,13 +192,13 @@
      - Prose (headings, paragraphs, quiz Q&A, checklist) is plain HTML below.
        Edit the words between the tags freely.
      - The live code samples (the "good code", the broken variants, and the
-       LMS stylesheet used by the preview) live in ONE <script> block at the
+       eFront stylesheet used by the preview) live in ONE <script> block at the
        very bottom, clearly marked "EDITABLE COURSE DATA". Change them there.
      ========================================================================= -->
 
 <nav class="top">
   <div class="container">
-    <span class="brand">LMS Editing Guide</span>
+    <span class="brand">eFront Editing Guide</span>
     <a href="#start">How to use this</a>
     <a href="#basics">1. Basics</a>
     <a href="#anatomy">2. Anatomy</a>
@@ -212,7 +212,7 @@
 <header class="hero" id="start">
   <div class="container">
     <div class="eyebrow">For Course Instructors</div>
-    <h1>Editing LMS Pages<br/>Without Breaking Them</h1>
+    <h1>Editing eFront Pages<br/>Without Breaking Them</h1>
     <p class="lede">Our course pages all share the same simple structure and a small set of styles.
     You don't need to <em>write</em> HTML. You need to <strong>read</strong> the good version,
     <strong>recognise</strong> what changed when a page looks wrong, and <strong>put it back</strong>.
@@ -564,7 +564,7 @@
 (function () {
   "use strict";
 
-  /* --- The company LMS stylesheet (faithful subset of the real one). --------
+  /* --- The company eFront stylesheet (faithful subset of the real one). ------
      Only the rules that style this page's tags/classes are here. If one of your
      pages uses other classes (tables, .podcast, .simplystated, etc.), copy those
      rules from your real stylesheet into this string. */

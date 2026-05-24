@@ -1,7 +1,7 @@
-# LMS Editing Guide
+# eFront Editing Guide
 
 An interactive, self-contained course that teaches course instructors to **read** our standard
-LMS page structure, **recognise** what broke when a page looks wrong, and **put it back** — without
+eFront page structure, **recognise** what broke when a page looks wrong, and **put it back** — without
 needing to write HTML from scratch.
 
 **Live link:** _(added after first deploy)_
