@@ -217,6 +217,7 @@
     <a href="#anatomy">2. Anatomy</a>
     <a href="#sandbox">3. Sandbox</a>
     <a href="#breaks">4. Spot the break</a>
+    <a href="#annual-limit">5. Annual-limit tag</a>
     <a href="#checklist">Cheat sheet</a>
   </div>
 </nav>
@@ -546,6 +547,76 @@
   </div>
 </section>
 
+<!-- ===================== SECTION 5: ANNUAL-LIMIT TAG ===================== -->
+<section id="annual-limit">
+  <div class="container">
+    <div class="section-eyebrow">Part 5</div>
+    <h2>The annual-limit tag &mdash; an invisible marker you'll maintain</h2>
+    <p>Some numbers in our courses are set by law or regulation and change every year &mdash;
+    contribution limits, tax thresholds, the kind of figures that go stale the moment the rules
+    update. To make every one of them easy to find when that happens, we wrap each number in a
+    special marker tag. It is the same idea you've already learned &mdash; <strong>a class name on a
+    <code class="inline">&lt;span&gt;</code></strong> &mdash; with one twist: this tag adds <em>no
+    visual styling at all</em>. Its only job is to be <strong>findable by search</strong>.</p>
+
+    <h3>What it looks like</h3>
+    <p>The marker is a <code class="inline">&lt;span&gt;</code> wrapped around the number it's tracking:</p>
+    <pre class="code">&lt;p&gt;The annual contribution limit is
+   &lt;span class="annual-limit-review-ret-26-case"&gt;$23,500&lt;/span&gt;.&lt;/p&gt;</pre>
+
+    <h3>It's invisible &mdash; which is exactly why it's easy to break</h3>
+    <p>Because the stylesheet has no rule for this class, the number looks <strong>identical</strong>
+    whether the tag is there or not. See for yourself &mdash; these two render the same:</p>
+    <div class="mini-compare">
+      <div><span class="code-label good">With the marker tag</span><iframe class="mini" id="al-with-view" title="With the tag"></iframe></div>
+      <div><span class="code-label good">Plain text</span><iframe class="mini" id="al-without-view" title="Without the tag"></iframe></div>
+    </div>
+    <div class="warnbox"><strong>Treat it as load-bearing even though you can't see it.</strong> If you
+    delete or alter the <code class="inline">&lt;span&gt;</code> while editing the surrounding text,
+    nothing on the page will look wrong &mdash; but that number has now dropped off the annual-update
+    radar and may quietly go stale, which is a compliance problem. When in doubt, leave the tag exactly
+    as it is.</div>
+
+    <h3>How to read the tag</h3>
+    <p>The class name is built from four parts. Only one of them ever changes.</p>
+    <pre class="code">annual-limit-review - ret - 26 - case
+&boxur; fixed prefix      &boxur;     &boxur;    &boxur; what kind of content (case, examprep,
+                     &boxur;     &boxur;        examprep-highlight)
+                     &boxur;     &boxur; the year the value is current for &mdash; THIS is what you advance
+                     &boxur; topic code (gp, ins, inv, tax, ret, est)</pre>
+    <details class="reveal"><summary>What does <code class="inline">annual-limit-review-ins-25-examprep</code> tell you?</summary>
+      <div class="answer">
+        <p>It's an annual-limit marker for the <strong>insurance</strong> topic (<code class="inline">ins</code>),
+        the value is current as of <strong>20<u>25</u></strong>, and it sits in <strong>exam-prep</strong> content.
+        When you do the yearly update, the only thing you change is <code class="inline">25</code> &rarr;
+        <code class="inline">26</code> &mdash; nothing else.</p>
+      </div>
+    </details>
+
+    <h3>The once-a-year update (how instructors find and refresh these)</h3>
+    <p>Each year, the numbers behind these tags need to be checked and advanced. Here's the routine:</p>
+    <ol class="prose">
+      <li>Go to <strong>Flash Finder</strong>: <code class="inline">https://learn.bostonifi.com/FlashFinder</code></li>
+      <li>In the <em>"find content"</em> field, type <strong>part</strong> of a tag &mdash; a topic code plus
+      the year, e.g. <code class="inline">ins-25</code>. (Searching the <em>full</em> tag returns zero results,
+      so always search a fragment.)</li>
+      <li>Open a result and click <strong>Edit Unit</strong> in the top-left corner.</li>
+      <li>Click <strong>Tools &rarr; Source Code</strong>.</li>
+      <li>In the Source Code pop-up, find the tag and <strong>advance the year</strong> in it to the current
+      year (e.g. <code class="inline">25</code> &rarr; <code class="inline">26</code>). Update the number it
+      wraps if the figure itself changed.</li>
+      <li>Press <strong>OK</strong>, then scroll to the bottom and press <strong>Save</strong>.</li>
+    </ol>
+    <p>The topic fragments worth searching: <code class="inline">gp-</code>, <code class="inline">ins-</code>,
+    <code class="inline">inv-</code>, <code class="inline">tax-</code>, <code class="inline">ret-</code>,
+    <code class="inline">est-</code> (each followed by the year you're searching for).</p>
+    <div class="note"><strong>The one rule to remember:</strong> when you update, change <em>only</em> the
+    year number inside the tag (and the figure it wraps, if it moved). Keep the rest of the class name
+    &mdash; <code class="inline">annual-limit-review-</code>, the topic, and the type &mdash; character for
+    character, or the tag stops being findable next year.</div>
+  </div>
+</section>
+
 <!-- ===================== CHEAT SHEET ===================== -->
 <section id="checklist">
   <div class="container">
@@ -568,6 +639,7 @@
           <li>Keep <code class="inline">class</code> and <code class="inline">id</code> names <strong>exactly</strong> as they are.</li>
           <li>If pasted text looks "off", check for a stray <code class="inline">style="..."</code> and delete it…</li>
           <li>…<strong>but</strong> leave the image-centring and video <code class="inline">style="..."</code> alone.</li>
+          <li>Never delete an invisible <code class="inline">annual-limit-review-…</code> marker (Part 5); when updating, change only its year.</li>
         </ul>
       </div>
     </div>
@@ -709,7 +781,10 @@
     "ex3-bad-view":  W('<p>A clean paragraph.</p><p class="MsoNormal" style="margin:0in"><span style="font-size:11.0pt;font-family:&#39;Calibri&#39;,sans-serif;color:#1F3864">A paragraph pasted from Word.</span></p>'),
     "ex3-good-view": W('<p>A clean paragraph.</p><p>A paragraph pasted from Word.</p>'),
     "ex4-bad-view":  W('<div class="tipbox"><div class="exam-tip"><p><strong>Exam Tip:</strong> Remember the four stages in order.</p></div></div>'),
-    "ex4-good-view": W('<div class="tipbox"><div class="examtip"><p><strong>Exam Tip:</strong> Remember the four stages in order.</p></div></div>')
+    "ex4-good-view": W('<div class="tipbox"><div class="examtip"><p><strong>Exam Tip:</strong> Remember the four stages in order.</p></div></div>'),
+    // Part 5 — the annual-limit marker renders identically to plain text (no visual styling).
+    "al-with-view":    W('<p>The annual contribution limit is <span class="annual-limit-review-ret-26-case">$23,500</span>.</p>'),
+    "al-without-view": W('<p>The annual contribution limit is $23,500.</p>')
   };
 
   /* --- Rendering + wiring (no need to edit below) ---------------------------- */
